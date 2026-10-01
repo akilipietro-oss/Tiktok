@@ -290,6 +290,39 @@ h2{font-size:clamp(1.35rem,8cqw,2.3rem);text-shadow:.02em 0 var(--cy),-.02em 0 v
 .cm-i{display:flex;gap:10px;padding:8px 0;align-items:flex-start}.cm-i>div{flex:1;min-width:0}.cm-i b{font-size:.8rem;color:var(--mute)}.cm-i p{margin:2px 0 0;font-size:.9rem;line-height:1.35;overflow-wrap:break-word}
 .cm-i .cav{width:34px;height:34px}
 .cm-l{border:0;background:none;color:var(--mute);font-size:.78rem;padding:0 2px}.cm-l.on{color:var(--pk)}
+
+/* ===== V12: transições entre vídeos ===== */
+.slide{--p:0;--a:0;transform:translate3d(0,calc(var(--p)*7%),0) scale(calc(1 - var(--a)*.09));opacity:calc(1 - var(--a)*.75);filter:blur(calc(var(--a)*3px))}
+@keyframes enterArt{from{opacity:0;transform:translateY(var(--dy,25px)) scale(.94)}to{opacity:1;transform:none}}
+h2,.cp{transform:translateY(var(--dy2,14px))}
+.on h2{animation:glitchIn .6s steps(1,end) .1s both}
+@keyframes glitchIn{0%{text-shadow:6px 0 var(--cy),-6px 0 var(--pk);transform:translateX(-5px)}25%{text-shadow:-5px 0 var(--cy),5px 0 var(--pk);transform:translateX(4px)}50%{text-shadow:3px 0 var(--cy),-3px 0 var(--pk);transform:none}100%{text-shadow:.02em 0 var(--cy),-.02em 0 var(--pk);transform:none}}
+.wipe{position:absolute;inset:0;z-index:7;pointer-events:none;opacity:0;background:linear-gradient(115deg,transparent 30%,rgba(34,229,238,.35) 42%,rgba(255,61,127,.4) 58%,transparent 70%)}
+.wipe.up{animation:wipeUp .55s ease-out}.wipe.down{animation:wipeDown .55s ease-out}
+@keyframes wipeUp{0%{transform:translateY(100%);opacity:1}100%{transform:translateY(-100%);opacity:0}}
+@keyframes wipeDown{0%{transform:translateY(-100%);opacity:1}100%{transform:translateY(100%);opacity:0}}
+.seg span{transition:transform .25s}.seg[aria-current] span{transform:scaleY(1.9)}
+.slide:not(.on),.slide:not(.on)::before,.slide:not(.on)::after,.slide:not(.on) *{animation-play-state:paused!important}
+.cp.src{font-size:.78rem;color:rgba(255,255,255,.85)}
+@media(prefers-reduced-motion:reduce){.slide{transform:none!important;opacity:1!important;filter:none!important}.wipe{display:none}}
+
+/* ===== V13: perfil dos criadores ===== */
+body.prof-mode .tabs{display:none}
+.ava .avatar-photo,.user{cursor:pointer}
+#profview{padding:14px 14px 28px}
+.pf-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}.pf-bar b{font-size:1rem}.pf-bar button{border:0;background:rgba(255,255,255,.12);border-radius:50%;width:36px;height:36px;font-size:1.1rem}.pf-bar span{width:36px}
+.pf-head{display:flex;flex-direction:column;align-items:center;text-align:center;gap:4px}
+.pf-head .cav{width:92px;height:92px;border:2px solid #fff;font-size:2rem}
+.pf-head h3{font:800 1.15rem var(--display);margin:8px 0 0}.pf-u{color:var(--mute);margin:0;font-size:.85rem}
+.pf-st{display:flex;gap:22px;margin:12px 0}.pf-st div{display:grid}.pf-st b{font-size:1.1rem}.pf-st span{font-size:.72rem;color:var(--mute)}
+.pf-act{display:flex;gap:8px}.pf-act button{border:0;border-radius:6px;padding:10px 22px;font-weight:800;background:rgba(255,255,255,.14)}.pf-act .pf-fol{background:var(--pk);color:#fff;min-width:130px}.pf-act .pf-fol.is{background:rgba(255,255,255,.14)}
+.pf-bio{margin:12px 0 4px;font-size:.88rem;max-width:90%}
+.pf-tab{display:flex;justify-content:center;border-bottom:1px solid var(--line);margin:12px -14px 2px}.pf-tab b{padding:10px 26px;border-bottom:2px solid #fff;font-size:.9rem}
+.pf-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin:2px -14px 0}
+.pf-v{position:relative;aspect-ratio:3/4;border:0;padding:8px;display:flex;flex-direction:column;justify-content:space-between;align-items:flex-start;text-align:left;font-weight:800;font-size:.72rem;line-height:1.15;color:#fff;background:var(--g);overflow:hidden}
+.pf-v::after{content:"";position:absolute;inset:0;background:linear-gradient(transparent 40%,rgba(0,0,0,.6))}.pf-v>*{position:relative;z-index:1}
+.pf-v em{font-style:normal;font-size:.72rem}.pf-v u{display:block;width:fit-content;background:var(--pk);border-radius:3px;padding:1px 5px;margin-bottom:4px;text-decoration:none;font-size:.62rem}
+.pfback{position:absolute;z-index:6;top:62px;left:12px;border:0;border-radius:999px;padding:7px 12px;background:rgba(0,0,0,.65);color:#fff;font-weight:800;font-size:.82rem;display:none}.pfback.show{display:block}.shop-mode .pfback{display:none!important}
 </style>
 </head>
 <body>
@@ -297,6 +330,7 @@ h2{font-size:clamp(1.35rem,8cqw,2.3rem);text-shadow:.02em 0 var(--cy),-.02em 0 v
   <nav class="top" id="top" aria-label="Progresso dos vídeos"></nav>
   <div class="tabs"><button type="button" class="on" data-tab="feed">Para Você</button><button type="button" data-tab="shop">🛍️ Shop</button><button type="button" data-tab="chat">💬 Amigos</button></div>
   <div class="toast" id="toast" role="status"></div>
+  <div class="wipe" id="wipe" aria-hidden="true"></div>
 
   <main class="feed" id="feed" tabindex="-1">
     <section class="slide s1" data-title="O que é o TikTok" data-likes="1284" data-tags="#tiktok #explicando" data-desc="O que é o TikTok, em poucos segundos">
@@ -480,9 +514,9 @@ h2{font-size:clamp(1.35rem,8cqw,2.3rem);text-shadow:.02em 0 var(--cy),-.02em 0 v
       </div></div>
       <h2>Quanto fatura</h2>
       <div class="lines">
-        <span class="cp" style="--i:0">A ByteDance mira cerca de US$ 186 bi em 2025, uns 20% acima de 2024.</span>
+        <span class="cp" style="--i:0">Estimativas apontam cerca de US$ 186 bi para a ByteDance em 2025, uns 20% acima de 2024.</span>
         <span class="cp" style="--i:1">O TikTok não divulga a receita só do app: estimativas falam em ~US$ 27 bi nos EUA e US$ 6,3 bi na Europa em 2024.</span>
-        <span class="cp k" style="--i:2">Ainda não achei um número oficial de 2026.</span>
+        <span class="cp k" style="--i:2">Trate os valores como estimativas, não como balanço oficial.</span>
         <span class="cp src" style="--i:3">Fontes: Bloomberg e Sacra (estimativas; a empresa é privada).</span>
       </div>
     </section>
@@ -527,6 +561,7 @@ h2{font-size:clamp(1.35rem,8cqw,2.3rem);text-shadow:.02em 0 var(--cy),-.02em 0 v
     </section>
  </main>
   <section class="shopview" id="chatview" hidden aria-label="Mensagens"><div class="ch-body"></div></section>
+  <section class="shopview" id="profview" hidden aria-label="Perfil"></section>
   <section class="shopview" id="shopview" hidden aria-label="TikTok Shop">
     <nav class="sv-tabs"><button type="button" class="on" data-sv="learn">Como funciona</button><button type="button" data-sv="store">Loja</button><button type="button" data-sv="sell">Vender</button></nav>
     <div class="sv-pane on" data-pane="learn">
@@ -598,7 +633,7 @@ var CR=window.CR=[{u:'ana.clara',n:'Ana Clara',img:5},{u:'joao.vlog',n:'João',i
       lk.querySelector('span').textContent=fmt(likes);lk.classList.remove('pop');void lk.offsetWidth;if(on)lk.classList.add('pop');
     }
     lk.onclick=function(){like(!liked)};
-    sv.onclick=function(){var on=!sv.classList.contains('is');sv.classList.toggle('is',on);sv.classList.toggle('sv',true);sv.setAttribute('aria-pressed',on);say(on?'Salvo nos favoritos':'Removido dos favoritos')};
+    
     fol.onclick=function(){var on=!fol.classList.contains('is');fol.classList.toggle('is',on);fol.textContent=on?'✓':'+';say(on?'Você segue @'+C.u:'Você deixou de seguir')};
     s.querySelector('.sh').onclick=function(){
       var d={title:document.title,url:location.href};
@@ -628,7 +663,8 @@ var CR=window.CR=[{u:'ana.clara',n:'Ana Clara',img:5},{u:'joao.vlog',n:'João',i
     });
   }
   function go(i){i=Math.max(0,Math.min(n-1,i));feed.scrollTo({top:slides[i].offsetTop,behavior:rm.matches?'auto':'smooth'})}
-  function set(i){
+  function flick(d){feed.style.setProperty("--dy",(d*44)+"px");feed.style.setProperty("--dy2",(d*28)+"px");var w=document.getElementById("wipe");if(w){w.className="wipe";void w.offsetWidth;w.className="wipe "+(d>0?"up":"down")}}
+  function set(i){var dir=i>=cur?1:-1;if(i!==cur)flick(dir);
     var cz=document.querySelector(".cmt");if(cz)cz.classList.remove("open");cur=i;slides.forEach(function(s,k){s.classList.toggle('on',k===i)});countUp(slides[i]);
     segs.forEach(function(b,k){b.classList.toggle('done',k<=i);if(k===i)b.setAttribute('aria-current','true');else b.removeAttribute('aria-current')});
     prev.disabled=i===0;next.disabled=i===n-1;
@@ -650,6 +686,9 @@ var CR=window.CR=[{u:'ana.clara',n:'Ana Clara',img:5},{u:'joao.vlog',n:'João',i
   });
   addEventListener('resize',function(){feed.style.scrollBehavior='auto';feed.scrollTop=slides[cur].offsetTop;feed.style.scrollBehavior=''});
   feed.scrollTop=0;set(0);feed.focus({preventScroll:true});
+  var raf=0;function fx(){raf=0;var H=feed.clientHeight,st=feed.scrollTop;slides.forEach(function(s){var p=(s.offsetTop-st)/H;if(p>1.2||p<-1.2){if(s.__far!==1){s.style.setProperty('--p',p>0?1:-1);s.style.setProperty('--a',1);s.__far=1}return}s.__far=0;s.style.setProperty('--p',p.toFixed(3));s.style.setProperty('--a',Math.min(1,Math.abs(p)).toFixed(3))})}
+  feed.addEventListener('scroll',function(){if(!raf)raf=requestAnimationFrame(fx)},{passive:true});fx();
+  setTimeout(function(){say('Deslize ↑ ou toque 2× para curtir ❤️')},1400);
 })();
 </script>
 
@@ -732,7 +771,7 @@ var CR=window.CR=[{u:'ana.clara',n:'Ana Clara',img:5},{u:'joao.vlog',n:'João',i
     cart=[];coupon=0;saveCart();
     body.innerHTML=`<div class="empty-cart">✅<br><br><b>Pedido #${n} confirmado!</b><br><small>${pg} · ${t} · simulado, sem cobrança real</small></div><ul class="track"><li style="--k:0">Pedido confirmado</li><li style="--k:1">Em separação</li><li style="--k:2">Enviado</li><li style="--k:3">Entregue</li></ul>`;toastShop("Pedido simulado concluído")}
   const svw=document.getElementById("shopview");
-  function mode(m){svw.hidden=m!=="shop";chatv.hidden=m!=="chat";document.body.classList.toggle("shop-mode",m!=="feed");document.querySelectorAll(".tabs button").forEach(b=>b.classList.toggle("on",b.dataset.tab===m));if(m==="shop")svw.scrollTop=0;if(m==="chat")list()}
+  function mode(m){svw.hidden=m!=="shop";document.getElementById("profview").hidden=m!=="prof";document.body.classList.toggle("prof-mode",m==="prof");chatv.hidden=m!=="chat";document.body.classList.toggle("shop-mode",m!=="feed");document.querySelectorAll(".tabs button").forEach(b=>b.classList.toggle("on",b.dataset.tab===m));if(m==="shop")svw.scrollTop=0;if(m==="chat")list()}
   const chatv=document.getElementById("chatview"),ch=chatv.querySelector(".ch-body"),CR=window.CR;let hist={},at=-1;
   try{hist=JSON.parse(DB.g("demoChat")||"{}")}catch(e){}
   const esc=s=>s.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
@@ -743,7 +782,7 @@ var CR=window.CR=[{u:'ana.clara',n:'Ana Clara',img:5},{u:'joao.vlog',n:'João',i
   const GR=["Oi! Viu o último vídeo? 😄","E aí! Já abriu o TikTok hoje?","Oi! Bora trocar ideia sobre vídeos?"],TP=["dancinhas e trends","vlogs do dia a dia","dicas rápidas","edição de vídeo","tecnologia e gadgets","jogos","achadinhos do Shop","treino e saúde"];let me="";
   function smart(c,raw){
     const tp=TP[CR.indexOf(c)],s=raw.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,""),pick=a=>a[Math.floor(Math.random()*a.length)],has=r=>r.test(s),nome=me?", "+me:"";
-    const nm=(s.match(/(?:meu nome e|me chamo|sou o|sou a)\s+([a-z]+)/)||[])[1];
+    const nm=(s.match(/(?:meu nome e|me chamo)\s+([a-z]+)/)||[])[1];
     if(nm){me=nm[0].toUpperCase()+nm.slice(1);return `Prazer, ${me}! Eu sou ${c.n} e curto ${tp}. E você, curte o quê?`}
     if(has(/^(oi|ola|e ai|eai|opa|salve|bom dia|boa tarde|boa noite)\b/))return pick([`Oi${nome}! Tudo certo por aí? Eu estava vendo uns vídeos de ${tp}.`,`E aí${nome}! Que bom te ver. Sobre o que vamos falar hoje?`]);
     if(has(/tudo bem|como vai|como voce esta|td bem|tudo certo/))return pick([`Tudo ótimo! Passei a tarde vendo ${tp}. E você, como está?`,`Tudo bem sim! Só um pouco viciado(a) em ${tp} 😅 E você?`]);
@@ -755,7 +794,7 @@ var CR=window.CR=[{u:'ana.clara',n:'Ana Clara',img:5},{u:'joao.vlog',n:'João',i
     if(has(/jogo|jogar|game|gamer/))return `Jogos rendem vídeos ótimos, principalmente jogadas rápidas e reações. Qual jogo você mais curte?`;
     if(has(/obrigad|valeu|vlw|thanks/))return pick(["Imagina! 😄","Tmj! Qualquer coisa é só chamar.","De nada, foi um prazer ajudar!"]);
     if(has(/tchau|ate mais|flw|falou|fui/))return pick([`Até mais${nome}! Me chama quando quiser. 👋`,"Falou! Bons vídeos pra você 😄"]);
-    const kw=(s.match(/[a-z]{5,}/g)||[]).sort((a,b)=>b.length-a.length)[0];
+    const kw=(s.match(/[a-z]{5,}/g)||[]).filter(w=>!/^(obrigado|porque|tambem|entao|sobre|quando|voce|muito|assim|ainda|agora|pouco|aquele|aquela|depois|estou|gostei|queria|gostaria)$/.test(w)).sort((a,b)=>b.length-a.length)[0];
     if(/\?\s*$/.test(raw)||has(/^(como|por que|porque|o que|qual|quando|onde|quem|quanto)\b/))return kw?`Boa pergunta! Sobre "${kw}" eu não tenho certeza, mas acho que vale pesquisar nas fontes oficiais. O que você já descobriu?`:`Boa pergunta! Pode explicar um pouco mais?`;
     return kw?pick([`Interessante isso de "${kw}"! Conta mais: como isso se liga ao que você curte no TikTok?`,`Entendi, você falou de "${kw}". Eu sou mais de ${tp}, mas quero saber a sua visão.`]):pick(["Hmm, entendi! Me conta mais? 👀","Haha, boa! E aí, o que mais você tem visto por aqui?"]);
   }
@@ -769,7 +808,7 @@ var CR=window.CR=[{u:'ana.clara',n:'Ana Clara',img:5},{u:'joao.vlog',n:'João',i
   let cs=-1,mine={};try{mine=JSON.parse(DB.g("demoComments")||"{}")}catch(e){}
   const all=i=>{const t=SL[i].dataset.title;return (mine[i]||[]).slice().reverse().concat([0,1,2,3,4,5].map(k=>({id:"s"+i+"-"+k,c:(i+k*3)%8,t:POOL[(i*3+k*2)%POOL.length].replace("{t}",t),l:((i+1)*(k+3)*7)%240+3})))};
   const cnt=i=>{SL[i].querySelector(".cm span").textContent=all(i).length},saveCm=()=>DB.s("demoComments",JSON.stringify(mine));
-  function renderCm(){const a=all(cs);document.getElementById("cmn").textContent=a.length+" comentários";document.getElementById("cml").innerHTML=a.map(m=>{const c=CR[m.c],on=liked.has(m.id);return `<div class="cm-i">${m.me?'<span class="cav"><b>V</b></span>':av(c)}<div><b>${m.me?"Você":"@"+c.u}</b><p>${esc(m.t)}</p></div><button type="button" class="cm-l${on?" on":""}" data-cl="${m.id}">${on?"♥":"♡"} ${m.l+(on?1:0)}</button></div>`}).join("")}
+  function renderCm(){const a=all(cs);document.getElementById("cmn").textContent=a.length+" comentários";document.getElementById("cml").innerHTML=a.map(m=>{const c=CR[m.c],on=liked.has(m.id);return `<div class="cm-i" data-pc="${m.me?-1:m.c}">${m.me?'<span class="cav"><b>V</b></span>':av(c)}<div><b>${m.me?"Você":"@"+c.u}</b><p>${esc(m.t)}</p></div><button type="button" class="cm-l${on?" on":""}" data-cl="${m.id}">${on?"♥":"♡"} ${m.l+(on?1:0)}</button></div>`}).join("")}
   function sendCm(){const inp=document.getElementById("cmi"),t=inp.value.trim(),i=cs;if(!t||i<0)return;inp.value="";(mine[i]=mine[i]||[]).push({id:"u"+Date.now(),me:1,t,l:0});saveCm();renderCm();cnt(i);document.getElementById("cml").scrollTop=0;
     setTimeout(()=>{const ci=Math.floor(Math.random()*8);mine[i].push({id:"r"+Date.now(),c:ci,t:"@Você "+(/\?/.test(t)?smart(CR[ci],t):["Valeu pelo comentário! 😄","Também achei muito bom!","Concordo totalmente 👏","Haha, verdade! Bora compartilhar?"][Math.floor(Math.random()*4)]),l:0});saveCm();cnt(i);if(cs===i&&cmt.classList.contains("open"))renderCm()},1800)}
   SL.forEach((s,i)=>cnt(i));
@@ -809,6 +848,36 @@ var CR=window.CR=[{u:'ana.clara',n:'Ana Clara',img:5},{u:'joao.vlog',n:'João',i
 
 
   
+  const kk=v=>v>=1e6?(v/1e6).toFixed(1).replace(".",",")+" mi":v>=1e3?(v/1e3).toFixed(1).replace(".",",")+" mil":String(v);
+  const BIO=["Dancinhas e trends todo dia 💃","Vlogs do meu dia a dia 🎬","Dicas rápidas que funcionam ✨","Edição de vídeo sem mistério ✂️","Tech e gadgets 📱","Gameplay e reações 🎮","Achadinhos do Shop 🛍️","Treino e vida saudável 💪"];
+  const pv=document.getElementById("profview"),fd=document.getElementById("feed"),pb=document.createElement("button");
+  pb.type="button";pb.className="pfback";document.getElementById("stage").appendChild(pb);
+  let pc=-1,bi=-1,pm="feed";
+  const isF=c=>SL.some((s,i)=>i%CR.length===c&&s.querySelector(".fol").classList.contains("is"));
+  function renderProf(c){
+    const u=CR[c],f=isF(c),vs=SL.map((s,i)=>i).filter(i=>i%CR.length===c),t=pv.scrollTop,lk=vs.reduce((a,i)=>a+(+SL[i].dataset.likes),0)*137;
+    pv.innerHTML=`<div class="pf-bar"><button type="button" data-pback aria-label="Voltar">←</button><b>@${u.u}</b><span></span></div>
+    <div class="pf-head">${av(u)}<h3>${u.n}</h3><p class="pf-u">@${u.u}</p>
+    <div class="pf-st"><div><b>${(c*37)%400+30}</b><span>Seguindo</span></div><div><b>${kk(((c+2)*48210)%900000+12000+(f?1:0))}</b><span>Seguidores</span></div><div><b>${kk(lk)}</b><span>Curtidas</span></div></div>
+    <div class="pf-act"><button type="button" class="pf-fol${f?" is":""}" data-pfol>${f?"Seguindo":"Seguir"}</button><button type="button" data-pmsg>Mensagem</button></div>
+    <p class="pf-bio">${BIO[c%BIO.length]}</p></div>
+    <div class="pf-tab"><b>▦ Vídeos</b></div>
+    <div class="pf-grid">${vs.map((i,k)=>`<button type="button" class="pf-v" style="--g:linear-gradient(160deg,${G[(i+c)%4]})" data-pv="${i}" aria-label="Abrir vídeo ${esc(SL[i].dataset.title)}"><span>${k?"":"<u>Fixado</u>"}${esc(SL[i].dataset.title)}</span><em>▷ ${kk(+SL[i].dataset.likes*9)}</em></button>`).join("")}</div>`;
+    pv.scrollTop=t}
+  function openProf(c){pc=c;pm=!chatv.hidden?"chat":!svw.hidden?"shop":"feed";cmt.classList.remove("open");pb.classList.remove("show");bi=-1;renderProf(c);mode("prof");pv.scrollTop=0}
+  document.addEventListener("click",e=>{
+    const t=e.target;
+    if((t.closest(".ava")&&!t.closest(".fol"))||t.closest(".user")){const s=t.closest(".slide");if(s)openProf(SL.indexOf(s)%CR.length);return}
+    const ci=t.closest(".cm-i[data-pc]");if(ci&&(t.closest(".cav")||t.closest("b"))&&+ci.dataset.pc>=0){openProf(+ci.dataset.pc);return}
+    if(t.closest("[data-pback]")){mode(pm);return}
+    if(t.closest(".pfback")){openProf(pc);return}
+    if(t.closest("[data-pfol]")){const want=!isF(pc);SL.forEach((s,i)=>{if(i%CR.length===pc){const f=s.querySelector(".fol");if(f.classList.contains("is")!==want)f.click()}});renderProf(pc);return}
+    if(t.closest("[data-pmsg]")){const c=pc;mode("chat");openChat(c);return}
+    const v=t.closest("[data-pv]");if(v){const i=+v.dataset.pv;bi=i;mode("feed");fd.style.scrollBehavior="auto";fd.scrollTop=SL[i].offsetTop;fd.style.scrollBehavior="";pb.textContent="← @"+CR[pc].u;pb.classList.add("show")}
+  });
+  document.addEventListener("click",e=>{const f=e.target.closest(".fol");if(!f)return;const i=SL.indexOf(f.closest(".slide")),on=f.classList.contains("is");SL.forEach((o,k)=>{if(k!==i&&k%CR.length===i%CR.length){const g=o.querySelector(".fol");g.classList.toggle("is",on);g.textContent=on?"✓":"+"}})});
+  fd.addEventListener("scroll",()=>{if(bi>=0&&Math.abs(fd.scrollTop-SL[bi].offsetTop)>fd.clientHeight*.6){pb.classList.remove("show");bi=-1}},{passive:true});
+  document.addEventListener("keydown",e=>{if(e.key==="Escape"){overlay.classList.remove("open");cmt.classList.remove("open")}});
   // Salvamento robusto: persiste por slide e nunca depende de API externa.
   document.querySelectorAll(".slide").forEach((s,i)=>{
     const btn=s.querySelector(".sv"); if(!btn)return;
